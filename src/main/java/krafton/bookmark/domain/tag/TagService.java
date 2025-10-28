@@ -1,13 +1,12 @@
 package krafton.bookmark.domain.tag;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import krafton.bookmark.domain.exception.AlreadyExistException;
 import krafton.bookmark.domain.exception.NotFoundEntityException;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.dto.TagResponse;
 import krafton.bookmark.domain.tag.dto.TagSaveRequest;
-import krafton.bookmark.domain.tag.dto.TagUpdateReq;
+import krafton.bookmark.domain.tag.dto.TagUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,7 @@ public class TagService {
     }
 
     @Transactional
-    public void updateName(TagUpdateReq req) {
+    public void updateName(TagUpdateRequest req) {
         Tag find = tagRepository.findByIdAndAuthor(req.id(), req.author()).orElseThrow(
                 () -> {
                     log.error("태그 업데이트 실패! id : {}, author = {}", req.id(), req.author().getId());

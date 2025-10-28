@@ -5,7 +5,7 @@ import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.exception.AlreadyExistException;
 import krafton.bookmark.domain.tag.dto.TagResponse;
 import krafton.bookmark.domain.tag.dto.TagSaveRequest;
-import krafton.bookmark.domain.tag.dto.TagUpdateReq;
+import krafton.bookmark.domain.tag.dto.TagUpdateRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -122,7 +122,7 @@ class TagServiceTest {
         given(tagRepository.findByIdAndAuthor(any(), eq(testAuthor))).willReturn(Optional.of(tempTag));
 
         //when
-        tagService.updateName(new TagUpdateReq(
+        tagService.updateName(new TagUpdateRequest(
                 tempTag.getId(),
                 testAuthor,
                 updateName
@@ -139,7 +139,7 @@ class TagServiceTest {
         given(tagRepository.findByIdAndAuthor(any(), eq(testAuthor))).willReturn(Optional.empty());
 
         //when & then
-        assertThrows(NotFoundEntityException.class, () -> tagService.updateName(new TagUpdateReq(
+        assertThrows(NotFoundEntityException.class, () -> tagService.updateName(new TagUpdateRequest(
                 100200L,
                 testAuthor,
                 "없는 태그"
