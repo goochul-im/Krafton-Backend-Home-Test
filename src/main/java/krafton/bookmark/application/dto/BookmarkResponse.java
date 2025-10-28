@@ -1,6 +1,4 @@
-package krafton.bookmark.domain.bookmark.dto;
-
-import krafton.bookmark.domain.tag.dto.TagResponse;
+package krafton.bookmark.application.dto;
 
 import java.time.LocalDateTime;
 

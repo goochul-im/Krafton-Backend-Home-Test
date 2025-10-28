@@ -1,11 +1,13 @@
-package krafton.bookmark.domain.tag;
+package krafton.bookmark.application.service;
 
-import krafton.bookmark.domain.exception.NotFoundEntityException;
+import krafton.bookmark.application.exception.NotFoundEntityException;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.exception.AlreadyExistException;
-import krafton.bookmark.domain.tag.dto.TagResponse;
-import krafton.bookmark.domain.tag.dto.TagSaveRequest;
-import krafton.bookmark.domain.tag.dto.TagUpdateRequest;
+import krafton.bookmark.application.exception.AlreadyExistException;
+import krafton.bookmark.application.dto.TagResponse;
+import krafton.bookmark.application.dto.TagSaveRequest;
+import krafton.bookmark.application.dto.TagUpdateRequest;
+import krafton.bookmark.domain.tag.Tag;
+import krafton.bookmark.domain.tag.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

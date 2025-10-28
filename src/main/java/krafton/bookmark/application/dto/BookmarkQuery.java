@@ -1,4 +1,4 @@
-package krafton.bookmark.domain.bookmark.dto;
+package krafton.bookmark.application.dto;
 
 public record BookmarkQuery(
         String title,

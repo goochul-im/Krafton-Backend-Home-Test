@@ -1,7 +1,9 @@
-package krafton.bookmark.domain.member;
+package krafton.bookmark.application.service;
 
 import krafton.bookmark.api.dto.SingUpRequest;
-import krafton.bookmark.domain.exception.AlreadyExistException;
+import krafton.bookmark.application.exception.AlreadyExistException;
+import krafton.bookmark.domain.member.Member;
+import krafton.bookmark.domain.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

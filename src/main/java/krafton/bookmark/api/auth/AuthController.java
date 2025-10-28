@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import krafton.bookmark.api.dto.SingUpRequest;
 import krafton.bookmark.common.security.details.CustomUserDetails;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.member.MemberService;
+import krafton.bookmark.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

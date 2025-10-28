@@ -1,4 +1,4 @@
-package krafton.bookmark.domain.bookmark.dto;
+package krafton.bookmark.application.dto;
 
 import krafton.bookmark.domain.bookmark.Bookmark;
 import krafton.bookmark.domain.member.Member;

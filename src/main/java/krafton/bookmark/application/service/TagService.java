@@ -1,12 +1,14 @@
-package krafton.bookmark.domain.tag;
+package krafton.bookmark.application.service;
 
 import jakarta.transaction.Transactional;
-import krafton.bookmark.domain.exception.AlreadyExistException;
-import krafton.bookmark.domain.exception.NotFoundEntityException;
+import krafton.bookmark.application.exception.AlreadyExistException;
+import krafton.bookmark.application.exception.NotFoundEntityException;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.tag.dto.TagResponse;
-import krafton.bookmark.domain.tag.dto.TagSaveRequest;
-import krafton.bookmark.domain.tag.dto.TagUpdateRequest;
+import krafton.bookmark.domain.tag.Tag;
+import krafton.bookmark.domain.tag.TagRepository;
+import krafton.bookmark.application.dto.TagResponse;
+import krafton.bookmark.application.dto.TagSaveRequest;
+import krafton.bookmark.application.dto.TagUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

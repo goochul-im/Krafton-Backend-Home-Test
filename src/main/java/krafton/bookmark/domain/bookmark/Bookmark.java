@@ -2,7 +2,7 @@ package krafton.bookmark.domain.bookmark;
 
 import jakarta.persistence.*;
 import krafton.bookmark.common.BaseEntity;
-import krafton.bookmark.domain.bookmark.dto.BookmarkResponse;
+import krafton.bookmark.application.dto.BookmarkResponse;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.Tag;
 import lombok.AccessLevel;

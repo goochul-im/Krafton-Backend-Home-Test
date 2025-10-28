@@ -1,10 +1,12 @@
-package krafton.bookmark.domain.bookmark;
+package krafton.bookmark.application.service;
 
-import krafton.bookmark.domain.bookmark.dto.BookmarkQuery;
-import krafton.bookmark.domain.bookmark.dto.BookmarkResponse;
-import krafton.bookmark.domain.bookmark.dto.BookmarkSaveRequest;
-import krafton.bookmark.domain.bookmark.dto.BookmarkUpdateRequest;
-import krafton.bookmark.domain.exception.NotFoundEntityException;
+import krafton.bookmark.application.dto.BookmarkQuery;
+import krafton.bookmark.application.dto.BookmarkResponse;
+import krafton.bookmark.application.dto.BookmarkSaveRequest;
+import krafton.bookmark.application.dto.BookmarkUpdateRequest;
+import krafton.bookmark.application.exception.NotFoundEntityException;
+import krafton.bookmark.domain.bookmark.Bookmark;
+import krafton.bookmark.domain.bookmark.BookmarkRepository;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.Tag;
 import krafton.bookmark.domain.tag.TagRepository;

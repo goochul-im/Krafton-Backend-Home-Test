@@ -1,4 +1,4 @@
-package krafton.bookmark.domain.exception;
+package krafton.bookmark.application.exception;
 
 import krafton.bookmark.common.exception.BusinessException;
 import krafton.bookmark.common.exception.ErrorCode;
