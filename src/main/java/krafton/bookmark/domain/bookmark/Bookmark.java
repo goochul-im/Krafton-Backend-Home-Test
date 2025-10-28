@@ -1,4 +1,4 @@
-package krafton.bookmark.domain.bookmark.entity;
+package krafton.bookmark.domain.bookmark;
 
 import jakarta.persistence.*;
 import krafton.bookmark.common.BaseEntity;
