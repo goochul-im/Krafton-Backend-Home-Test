@@ -1,7 +1,7 @@
 package krafton.bookmark.domain.member;
 
 import krafton.bookmark.api.dto.SingUpRequest;
-import krafton.bookmark.domain.member.exception.AlreadyExistException;
+import krafton.bookmark.domain.exception.AlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

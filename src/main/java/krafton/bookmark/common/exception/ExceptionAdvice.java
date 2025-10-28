@@ -1,6 +1,6 @@
 package krafton.bookmark.common.exception;
 
-import krafton.bookmark.domain.member.exception.AlreadyExistException;
+import krafton.bookmark.domain.exception.AlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
