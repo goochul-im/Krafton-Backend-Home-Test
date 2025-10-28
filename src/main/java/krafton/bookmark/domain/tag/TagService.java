@@ -46,7 +46,7 @@ public class TagService {
     @Transactional
     public void delete(Member author, Long id) {
         if (!tagRepository.existsByIdAndAuthor(id, author)) {
-            log.error("태그 삭제 실패! id : {}", id);
+            log.error("태그 삭제 실패! id : {}, author = {}", id, author.getId());
             throw new NotFoundEntityException("해당 id의 태그가 없습니다.");
         }
 
@@ -57,10 +57,17 @@ public class TagService {
     public void updateName(TagUpdateReq req) {
         Tag find = tagRepository.findByIdAndAuthor(req.id(), req.author()).orElseThrow(
                 () -> {
-                    log.error("태그 업데이트 실패! id : {}", req.id());
+                    log.error("태그 업데이트 실패! id : {}, author = {}", req.id(), req.author().getId());
                     return new NotFoundEntityException("업데이트할 태그를 찾지 못했습니다");
                 }
         );
         find.updateName(req.updateName());
+    }
+
+    public Tag findOne(Member author, Long id) {
+        return tagRepository.findByIdAndAuthor(id, author).orElseThrow(() -> {
+            log.error("엔티티를 찾을 수 없습니다. id = {}, author = {}", id, author.getId());
+            return new NotFoundEntityException("해당 엔티티가 없습니다");
+        });
     }
 }

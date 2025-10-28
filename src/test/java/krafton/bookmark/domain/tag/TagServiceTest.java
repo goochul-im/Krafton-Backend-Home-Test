@@ -49,6 +49,15 @@ class TagServiceTest {
     );
 
     @Test
+    void 없는_태그를_찾으면_예외를_던진다(){
+        //given
+        given(tagRepository.findByIdAndAuthor(any(), any())).willReturn(Optional.empty());
+
+        //when & then
+        assertThrows(NotFoundEntityException.class, () -> tagService.findOne(testAuthor, 30020L));
+    }
+
+    @Test
     void 태그는_정확하게_생성되어야한다(){
 
 
