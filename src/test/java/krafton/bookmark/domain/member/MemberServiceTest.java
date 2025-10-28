@@ -1,6 +1,7 @@
 package krafton.bookmark.domain.member;
 
 import krafton.bookmark.api.dto.SingUpRequest;
+import krafton.bookmark.domain.exception.AlreadyExistException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,7 @@ class MemberServiceTest {
 
         //GIVEN
         given(memberRepository.save(any())).willReturn(testMember);
+        given(memberRepository.countByUsername(username)).willReturn(0);
 
         //WHEN
         Member save = memberService.signUp(testRequest);
@@ -48,6 +50,6 @@ class MemberServiceTest {
         given(memberRepository.countByUsername(username)).willReturn(1);
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class, () -> memberService.signUp(testRequest));
+        assertThrows(AlreadyExistException.class, () -> memberService.signUp(testRequest));
     }
 }
