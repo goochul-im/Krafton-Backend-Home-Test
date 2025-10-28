@@ -1,6 +1,7 @@
 package krafton.bookmark.common.exception;
 
 import krafton.bookmark.domain.exception.AlreadyExistException;
+import krafton.bookmark.domain.exception.NotFoundEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +16,12 @@ public class ExceptionAdvice {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), e.getErrorCode());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundEntityException.class)
+    public ResponseEntity<ErrorResponse> handleException(NotFoundEntityException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), e.getErrorCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 }
