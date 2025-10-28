@@ -19,4 +19,8 @@ public class Member extends BaseEntity {
     @Column
     private String password;
 
+    public Member(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
