@@ -1,4 +1,4 @@
-package krafton.bookmark.api.auth;
+package krafton.bookmark.api;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,5 +46,12 @@ public class AuthController {
 
         return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
+
+    /**
+     * swagger 명세서를 만들기 위한 가짜 api입니다.
+     * /auth/login은 스프링 시큐리티의 CustomAuthenticationRequestFilter가 가로채어 처리합니다.
+     */
+    @PostMapping("/login")
+    public void fakeLoginApi(){}
 
 }
