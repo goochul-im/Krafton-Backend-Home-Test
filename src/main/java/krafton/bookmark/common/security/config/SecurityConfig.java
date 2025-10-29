@@ -36,6 +36,16 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint customAuthenticationEntryPoint;
     private final AccessDeniedHandler customAccessDeniedHandler;
 
+    private static final String[] SWAGGER_URLS = {
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+            "/api-docs",
+            "/api-docs/**",
+            "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -44,15 +54,16 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = managerBuilder.build();
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll() //h2
+                        .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll() //swagger
+                        .requestMatchers("/auth/**", "/error").permitAll()
                         .anyRequest().authenticated()
         )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(customAuthenticationRequestFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
                 .headers(headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) //h2
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDeniedHandler)
