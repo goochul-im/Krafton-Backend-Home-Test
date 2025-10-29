@@ -7,7 +7,7 @@ import krafton.bookmark.application.dto.TagResponse;
 import krafton.bookmark.application.dto.TagSaveRequest;
 import krafton.bookmark.application.dto.TagUpdateRequest;
 import krafton.bookmark.domain.tag.Tag;
-import krafton.bookmark.domain.tag.TagRepository;
+import krafton.bookmark.infrastructure.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

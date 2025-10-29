@@ -1,6 +1,7 @@
-package krafton.bookmark.domain.tag;
+package krafton.bookmark.infrastructure;
 
 import krafton.bookmark.domain.member.Member;
+import krafton.bookmark.domain.tag.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

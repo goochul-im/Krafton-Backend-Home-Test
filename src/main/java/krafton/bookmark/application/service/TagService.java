@@ -5,7 +5,7 @@ import krafton.bookmark.application.exception.AlreadyExistException;
 import krafton.bookmark.application.exception.NotFoundEntityException;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.Tag;
-import krafton.bookmark.domain.tag.TagRepository;
+import krafton.bookmark.infrastructure.TagRepository;
 import krafton.bookmark.application.dto.TagResponse;
 import krafton.bookmark.application.dto.TagSaveRequest;
 import krafton.bookmark.application.dto.TagUpdateRequest;

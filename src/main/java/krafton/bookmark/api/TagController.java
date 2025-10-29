@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import krafton.bookmark.api.dto.TagSaveApiRequest;
 import krafton.bookmark.api.dto.TagUpdateApiRequest;
 import krafton.bookmark.application.dto.TagResponse;
@@ -46,7 +47,7 @@ public class TagController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
     @PostMapping
     public ResponseEntity<?> create(
-            @RequestBody TagSaveApiRequest req,
+            @Valid @RequestBody TagSaveApiRequest req,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails){
 
         Tag save = tagService.save(new TagSaveRequest(
@@ -77,7 +78,7 @@ public class TagController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @Parameter(description = "태그 ID") @PathVariable Long id,
-            @RequestBody TagUpdateApiRequest req,
+            @Valid @RequestBody TagUpdateApiRequest req,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails){
 
         TagResponse result = tagService.updateName(new TagUpdateRequest(

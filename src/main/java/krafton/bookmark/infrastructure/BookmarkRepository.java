@@ -1,5 +1,6 @@
-package krafton.bookmark.domain.bookmark;
+package krafton.bookmark.infrastructure;
 
+import krafton.bookmark.domain.bookmark.Bookmark;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.Tag;
 import org.springframework.data.domain.Page;

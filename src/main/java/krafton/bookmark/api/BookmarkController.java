@@ -6,8 +6,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import krafton.bookmark.api.dto.BookmarkSaveApiRequest;
 import krafton.bookmark.api.dto.BookmarkUpdateApiRequest;
+import krafton.bookmark.api.dto.PageResponse;
 import krafton.bookmark.application.dto.BookmarkQuery;
 import krafton.bookmark.application.dto.BookmarkResponse;
 import krafton.bookmark.application.dto.BookmarkSaveRequest;
@@ -40,7 +42,7 @@ public class BookmarkController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
     @PostMapping
     public ResponseEntity<?> saveBookmark(
-            @RequestBody BookmarkSaveApiRequest request,
+            @Valid @RequestBody BookmarkSaveApiRequest request,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails details) {
 
         Bookmark save = bookmarkService.save(new BookmarkSaveRequest(
@@ -81,11 +83,11 @@ public class BookmarkController {
     @PutMapping("{id}")
     public ResponseEntity<?> updateBookmark(
             @Parameter(description = "북마크 ID") @PathVariable Long id,
-            @RequestBody BookmarkUpdateApiRequest request,
+            @Valid @RequestBody BookmarkUpdateApiRequest request,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails details) {
 
         BookmarkResponse update = bookmarkService.update(new BookmarkUpdateRequest(
-                details.getMember(), id, request.title(), request.url(), request.memo(), request.tagId()
+                details.getMember(), id ,request.title(), request.url(), request.memo(), request.tagId()
         ));
 
         return new ResponseEntity<>(update, HttpStatus.OK);
@@ -105,10 +107,8 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 검색", description = "조건에 따라 북마크를 검색하고 페이지네이션하여 반환합니다.")
-    @ApiResponse(responseCode = "200", description = "북마크 검색 성공",
-            content = @Content(schema = @Schema(implementation = Page.class)))
     @GetMapping("/query")
-    public ResponseEntity<?> search(
+    public ResponseEntity<PageResponse<BookmarkResponse>> search(
             @Parameter(description = "검색할 북마크 제목 (부분 일치)") @RequestParam(required = false) String title,
             @Parameter(description = "검색할 북마크 URL (부분 일치)") @RequestParam(required = false) String url,
             @Parameter(description = "검색할 태그 ID") @RequestParam(required = false) Long tagId,
@@ -120,7 +120,14 @@ public class BookmarkController {
                 title, url, tagId
         ), details.getMember(), PageRequest.of(page - 1, size));
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        PageResponse<BookmarkResponse> pageResponse = new PageResponse<>(
+                result.getContent(),
+                result.getTotalPages(),
+                result.getNumber() + 1,
+                result.hasNext()
+        );
+
+        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
 }
