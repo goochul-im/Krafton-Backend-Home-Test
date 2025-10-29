@@ -22,14 +22,14 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
             value = "select b from Bookmark b " +
                     "left join fetch b.tag t " +
                     "where b.author = :author " +
-                    "and (:title is null or b.title = :title) " +
-                    "and (:url is null or b.url = :url) " +
+                    "and (:title is null or LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))) " +
+                    "and (:url is null or LOWER(b.url) LIKE LOWER(CONCAT('%', :url, '%'))) " +
                     "and (:tag is null or b.tag = :tag)",
 
             countQuery = "select count(b.id) from Bookmark b " +
                     "where b.author = :author " +
-                    "and (:title is null or b.title = :title) " +
-                    "and (:url is null or b.url = :url) " +
+                    "and (:title is null or LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))) " +
+                    "and (:url is null or LOWER(b.url) LIKE LOWER(CONCAT('%', :url, '%'))) " +
                     "and (:tag is null or b.tag = :tag)"
     )
     Page<Bookmark> findBookmarkPagesByQuery(
