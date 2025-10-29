@@ -34,7 +34,7 @@ public class BookmarkService {
 
     @Transactional
     public BookmarkResponse update(BookmarkUpdateRequest request) {
-        Bookmark find = getBookmark(request.id(), request.author());
+        Bookmark find = getBookmark(request.tagId(), request.author());
 
         Tag tag = null;
         if (request.tagId() != null) {

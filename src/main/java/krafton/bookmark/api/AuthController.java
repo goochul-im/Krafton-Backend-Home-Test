@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import krafton.bookmark.api.dto.SingUpRequest;
 import krafton.bookmark.common.security.details.CustomUserDetails;
 import krafton.bookmark.common.security.dto.LoginRequest;
@@ -57,7 +58,7 @@ public class AuthController {
             content = @Content(schema = @Schema(implementation = Member.class)))
     @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SingUpRequest req){
+    public ResponseEntity<?> signup(@Valid @RequestBody SingUpRequest req){
 
         Member member = memberService.signUp(req);
 

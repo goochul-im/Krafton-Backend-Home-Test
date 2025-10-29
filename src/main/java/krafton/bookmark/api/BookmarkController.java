@@ -83,11 +83,11 @@ public class BookmarkController {
     @PutMapping("{id}")
     public ResponseEntity<?> updateBookmark(
             @Parameter(description = "북마크 ID") @PathVariable Long id,
-            @RequestBody BookmarkUpdateApiRequest request,
+            @Valid @RequestBody BookmarkUpdateApiRequest request,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails details) {
 
         BookmarkResponse update = bookmarkService.update(new BookmarkUpdateRequest(
-                details.getMember(), id, request.title(), request.url(), request.memo(), request.tagId()
+                details.getMember(), request.title(), request.url(), request.memo(), id
         ));
 
         return new ResponseEntity<>(update, HttpStatus.OK);
