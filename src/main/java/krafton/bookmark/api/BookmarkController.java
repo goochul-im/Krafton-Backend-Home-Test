@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import krafton.bookmark.api.dto.BookmarkSaveApiRequest;
 import krafton.bookmark.api.dto.BookmarkUpdateApiRequest;
+import krafton.bookmark.api.dto.PageResponse;
 import krafton.bookmark.application.dto.BookmarkQuery;
 import krafton.bookmark.application.dto.BookmarkResponse;
 import krafton.bookmark.application.dto.BookmarkSaveRequest;
@@ -105,10 +106,8 @@ public class BookmarkController {
     }
 
     @Operation(summary = "북마크 검색", description = "조건에 따라 북마크를 검색하고 페이지네이션하여 반환합니다.")
-    @ApiResponse(responseCode = "200", description = "북마크 검색 성공",
-            content = @Content(schema = @Schema(implementation = Page.class)))
     @GetMapping("/query")
-    public ResponseEntity<?> search(
+    public ResponseEntity<PageResponse<BookmarkResponse>> search(
             @Parameter(description = "검색할 북마크 제목 (부분 일치)") @RequestParam(required = false) String title,
             @Parameter(description = "검색할 북마크 URL (부분 일치)") @RequestParam(required = false) String url,
             @Parameter(description = "검색할 태그 ID") @RequestParam(required = false) Long tagId,
@@ -120,7 +119,14 @@ public class BookmarkController {
                 title, url, tagId
         ), details.getMember(), PageRequest.of(page - 1, size));
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        PageResponse<BookmarkResponse> pageResponse = new PageResponse<>(
+                result.getContent(),
+                result.getTotalPages(),
+                result.getNumber() + 1,
+                result.hasNext()
+        );
+
+        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
 }
