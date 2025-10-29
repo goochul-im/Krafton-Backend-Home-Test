@@ -241,4 +241,46 @@ class BookmarkServiceTest {
         });
         then(bookmarkRepository).should(never()).findBookmarkPagesByQuery(any(), any(), any(), any(), any());
     }
+
+    @Test
+    void 모든_북마크_조회_시_조회를_시도한_유저의_것만_가져와야_한다() {
+        //given
+        List<Bookmark> mockBookmarks = List.of(new Bookmark("testTitle1", "testUrl", "memo", testAuthor), new Bookmark("testTitle2", "testUrl2", "memo2", testAuthor));
+        given(bookmarkRepository.findAllByAuthor(testAuthor)).willReturn(mockBookmarks);
+
+        //when
+        List<BookmarkResponse> finds = bookmarkService.findAll(testAuthor);
+
+        //then
+        assertThat(finds.size()).isEqualTo(mockBookmarks.size());
+        assertThat(finds).extracting("title").containsExactlyInAnyOrder("testTitle1", "testTitle2");
+        then(bookmarkRepository).should(times(1)).findAllByAuthor(testAuthor);
+    }
+
+    @Test
+    void 북마크_삭제_시_정상적으로_삭제되어야_한다() {
+        // given
+        Long bookmarkIdToDelete = 1L;
+        given(bookmarkRepository.findWithTag(bookmarkIdToDelete, testAuthor)).willReturn(Optional.of(testBookmark));
+
+        // when
+        bookmarkService.deleteOne(bookmarkIdToDelete, testAuthor);
+
+        // then
+        then(bookmarkRepository).should(times(1)).findWithTag(bookmarkIdToDelete, testAuthor);
+        then(bookmarkRepository).should(times(1)).delete(testBookmark);
+    }
+
+    @Test
+    void 북마크_삭제_시_없는_북마크를_전달받으면_예외를_던진다() {
+        // given
+        Long nonExistentBookmarkId = 999L;
+        given(bookmarkRepository.findWithTag(nonExistentBookmarkId, testAuthor)).willReturn(Optional.empty());
+
+        // when & then
+        assertThrows(NotFoundEntityException.class, () -> bookmarkService.deleteOne(nonExistentBookmarkId, testAuthor));
+        then(bookmarkRepository).should(times(1)).findWithTag(nonExistentBookmarkId, testAuthor);
+        then(bookmarkRepository).should(never()).delete(any(Bookmark.class));
+    }
 }
+
