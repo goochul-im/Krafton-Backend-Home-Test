@@ -12,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -136,6 +139,34 @@ class BookmarkRepositoryTest {
         assertThat(found.getTag()).isEqualTo(tag2);
     }
 
+    @DisplayName("제목으로 부분 일치 검색하여 북마크를 조회한다")
+    @Test
+    void findBookmarkPagesByQuery_withPartialTitle() {
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when
+        Page<Bookmark> result = bookmarkRepository.findBookmarkPagesByQuery("title", null, null, author, pageRequest);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).extracting("title").containsOnly(title1, title2);
+    }
+
+    @DisplayName("URL로 부분 일치 검색하여 북마크를 조회한다")
+    @Test
+    void findBookmarkPagesByQuery_withPartialUrl() {
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when
+        Page<Bookmark> result = bookmarkRepository.findBookmarkPagesByQuery(null, "url", null, author, pageRequest);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).extracting("url").containsOnly(url1, url2, url3);
+    }
+
     @DisplayName("페이지네이션이 올바르게 동작하는지 확인한다")
     @Test
     void findBookmarkPagesByQuery_withPagination() {
@@ -163,5 +194,61 @@ class BookmarkRepositoryTest {
         // then
         assertThat(result.getTotalElements()).isEqualTo(0);
         assertThat(result.getContent()).isEmpty();
+    }
+
+    @DisplayName("ID와 작성자로 북마크를 태그와 함께 조회한다")
+    @Test
+    void findWithTag_shouldReturnBookmarkWithTagWhenExists() {
+        // given
+        Bookmark savedBookmark = bookmarkRepository.findAllByAuthor(author).get(0); // Get one of the saved bookmarks
+
+        // when
+        Optional<Bookmark> foundBookmarkOptional = bookmarkRepository.findWithTag(savedBookmark.getId(), author);
+
+        // then
+        assertThat(foundBookmarkOptional).isPresent();
+        Bookmark foundBookmark = foundBookmarkOptional.get();
+        assertThat(foundBookmark.getId()).isEqualTo(savedBookmark.getId());
+        assertThat(foundBookmark.getAuthor()).isEqualTo(author);
+        assertThat(foundBookmark.getTag()).isNotNull(); // Ensure tag is eagerly fetched
+    }
+
+    @DisplayName("존재하지 않는 ID로 북마크를 조회하면 빈 Optional을 반환한다")
+    @Test
+    void findWithTag_shouldReturnEmptyOptionalWhenNotFound() {
+        // given
+        Long nonExistingId = -1L;
+
+        // when
+        Optional<Bookmark> foundBookmarkOptional = bookmarkRepository.findWithTag(nonExistingId, author);
+
+        // then
+        assertThat(foundBookmarkOptional).isEmpty();
+    }
+
+    @DisplayName("작성자로 모든 북마크를 태그와 함께 조회한다")
+    @Test
+    void findAllByAuthor_shouldReturnAllBookmarksForAuthor() {
+        // when
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByAuthor(author);
+
+        // then
+        assertThat(bookmarks).hasSize(3); // setup에서 3개 만들어둠
+        assertThat(bookmarks).extracting("author").containsOnly(author);
+        assertThat(bookmarks.get(0).getTag()).isNotNull(); // Ensure tag is eagerly fetched
+        assertThat(bookmarks).isSortedAccordingTo((b1, b2) -> b2.getId().compareTo(b1.getId())); // order by b.id desc
+    }
+
+    @DisplayName("북마크가 없는 작성자로 조회하면 빈 리스트를 반환한다")
+    @Test
+    void findAllByAuthor_shouldReturnEmptyListWhenNoBookmarksForAuthor() {
+        // given
+        Member otherAuthor = memberRepository.save(new Member("other@test.com", "password"));
+
+        // when
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByAuthor(otherAuthor);
+
+        // then
+        assertThat(bookmarks).isEmpty();
     }
 }

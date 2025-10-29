@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid credentials");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     @Override

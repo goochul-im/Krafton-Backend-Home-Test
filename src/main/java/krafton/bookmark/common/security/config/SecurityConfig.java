@@ -1,6 +1,7 @@
 package krafton.bookmark.common.security.config;
 
 import krafton.bookmark.common.security.filter.CustomAuthenticationRequestFilter;
+import krafton.bookmark.common.security.handler.CustomAccessDeniedHandler;
 import krafton.bookmark.common.security.handler.CustomAuthenticationSuccessfulHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -13,10 +14,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +33,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationSuccessHandler customAuthenticationSuccessfulHandler;
     private final AuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final AuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final AccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,20 +50,26 @@ public class SecurityConfig {
         )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(customAuthenticationRequestFilter(http, authenticationManager), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customAuthenticationRequestFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
                 .headers(headers ->
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authenticationManager(authenticationManager);
 
         return http.build();
     }
 
-    private CustomAuthenticationRequestFilter customAuthenticationRequestFilter(HttpSecurity http, AuthenticationManager authenticationManager) {
-        CustomAuthenticationRequestFilter authenticationFilter = new CustomAuthenticationRequestFilter(http);
+    private CustomAuthenticationRequestFilter customAuthenticationRequestFilter(AuthenticationManager authenticationManager) {
+        CustomAuthenticationRequestFilter authenticationFilter = new CustomAuthenticationRequestFilter();
         authenticationFilter.setAuthenticationManager(authenticationManager);
         authenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessfulHandler);
         authenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
+        authenticationFilter.setSecurityContextRepository(new DelegatingSecurityContextRepository(
+                new RequestAttributeSecurityContextRepository(), new HttpSessionSecurityContextRepository()
+        ));
         return authenticationFilter;
     }
 

@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class BookmarkService {
     }
 
     @Transactional
-    public void update(BookmarkUpdateRequest request) {
+    public BookmarkResponse update(BookmarkUpdateRequest request) {
         Bookmark find = getBookmark(request.id(), request.author());
 
         Tag tag = null;
@@ -40,9 +42,9 @@ public class BookmarkService {
         }
 
         find.update(request.url(), request.title(), request.memo(), tag);
+        return find.toDto();
     }
 
-    @Transactional
     public BookmarkResponse findOne(Member author, Long id) {
         Bookmark bookmark = getBookmark(id, author);
 
@@ -57,6 +59,17 @@ public class BookmarkService {
 
         return bookmarkRepository.findBookmarkPagesByQuery(query.title(), query.url(), tag, author, pageable).map(Bookmark::toDto);
     }
+
+    public List<BookmarkResponse> findAll(Member author) {
+        return bookmarkRepository.findAllByAuthor(author).stream().map(Bookmark::toDto).toList();
+    }
+
+    @Transactional
+    public void deleteOne(Long id, Member author) {
+        Bookmark bookmark = getBookmark(id, author);
+        bookmarkRepository.delete(bookmark);
+    }
+
 
     private Tag getTag(Long tagId, Member author) {
         Tag tag;

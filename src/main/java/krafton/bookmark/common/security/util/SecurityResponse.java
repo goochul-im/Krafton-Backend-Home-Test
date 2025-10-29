@@ -22,6 +22,7 @@ public class SecurityResponse {
     public static void sendResponse(Map<String, Object> messages, HttpStatus status, HttpServletResponse response) throws IOException {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
 
         response.getWriter().write(
                 objectMapper.writeValueAsString(messages)

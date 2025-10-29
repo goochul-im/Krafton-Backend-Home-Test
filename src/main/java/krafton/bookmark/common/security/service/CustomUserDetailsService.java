@@ -24,11 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Username not found");
         }
 
-        LoginRequest loginRequest = new LoginRequest(
-                member.getUsername(),
-                member.getPassword()
-        );
-
-        return new CustomUserDetails(loginRequest);
+        return new CustomUserDetails(member);
     }
 }

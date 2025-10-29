@@ -8,15 +8,9 @@ import krafton.bookmark.common.security.dto.LoginRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.util.StringUtils;
 
@@ -26,22 +20,10 @@ public class CustomAuthenticationRequestFilter extends AbstractAuthenticationPro
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public CustomAuthenticationRequestFilter(HttpSecurity http) {
+    public CustomAuthenticationRequestFilter() {
         super(PathPatternRequestMatcher.withDefaults().matcher(
                 HttpMethod.POST, "/auth/login"
         ));
-        setSecurityContextRepository(getSecurityContextRepository(http));
-    }
-
-    public SecurityContextRepository getSecurityContextRepository(HttpSecurity http) {
-        SecurityContextRepository securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
-        if (securityContextRepository == null) {
-            securityContextRepository = new DelegatingSecurityContextRepository(
-                    new RequestAttributeSecurityContextRepository(), new HttpSessionSecurityContextRepository()
-            );
-
-        }
-        return securityContextRepository;
     }
 
     @Override
