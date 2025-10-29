@@ -33,7 +33,7 @@ public class BookmarkService {
     }
 
     @Transactional
-    public Bookmark update(BookmarkUpdateRequest request) {
+    public BookmarkResponse update(BookmarkUpdateRequest request) {
         Bookmark find = getBookmark(request.id(), request.author());
 
         Tag tag = null;
@@ -42,7 +42,7 @@ public class BookmarkService {
         }
 
         find.update(request.url(), request.title(), request.memo(), tag);
-        return find;
+        return find.toDto();
     }
 
     public BookmarkResponse findOne(Member author, Long id) {
