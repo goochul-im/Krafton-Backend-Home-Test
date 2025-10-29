@@ -8,6 +8,8 @@ import krafton.bookmark.domain.tag.Tag;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -30,6 +32,7 @@ public class Bookmark extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Tag tag;
 
     public Bookmark(String title, String url, String memo, Member author) {

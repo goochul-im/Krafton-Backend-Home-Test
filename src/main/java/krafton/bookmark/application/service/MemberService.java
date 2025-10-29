@@ -6,6 +6,7 @@ import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Member signUp(SingUpRequest request) {
 
@@ -24,7 +26,7 @@ public class MemberService {
 
         return memberRepository.save(new Member(
                 request.username(),
-                request.password()
+                passwordEncoder.encode(request.password())
         ));
     }
 
