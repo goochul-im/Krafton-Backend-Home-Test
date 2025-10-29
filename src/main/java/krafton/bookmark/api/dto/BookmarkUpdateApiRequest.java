@@ -14,6 +14,8 @@ public record BookmarkUpdateApiRequest(
         String url,
         @Schema(description = "북마크 메모", example = "자주 사용하는 검색 엔진", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @Pattern(regexp = ".*\\S+.*", message = "memo는 공백일 수 없습니다.")
-        String memo
+        String memo,
+        @Min(value = 1, message = "태그 ID는 1 이상이어야 합니다.")
+        Long tagId
 ) {
 }

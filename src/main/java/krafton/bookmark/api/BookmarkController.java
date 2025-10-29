@@ -87,7 +87,7 @@ public class BookmarkController {
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails details) {
 
         BookmarkResponse update = bookmarkService.update(new BookmarkUpdateRequest(
-                details.getMember(), request.title(), request.url(), request.memo(), id
+                details.getMember(), id ,request.title(), request.url(), request.memo(), request.tagId()
         ));
 
         return new ResponseEntity<>(update, HttpStatus.OK);
