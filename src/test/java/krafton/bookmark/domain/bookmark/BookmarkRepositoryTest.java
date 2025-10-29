@@ -139,6 +139,34 @@ class BookmarkRepositoryTest {
         assertThat(found.getTag()).isEqualTo(tag2);
     }
 
+    @DisplayName("제목으로 부분 일치 검색하여 북마크를 조회한다")
+    @Test
+    void findBookmarkPagesByQuery_withPartialTitle() {
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when
+        Page<Bookmark> result = bookmarkRepository.findBookmarkPagesByQuery("title", null, null, author, pageRequest);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).extracting("title").containsOnly(title1, title2);
+    }
+
+    @DisplayName("URL로 부분 일치 검색하여 북마크를 조회한다")
+    @Test
+    void findBookmarkPagesByQuery_withPartialUrl() {
+        // given
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        // when
+        Page<Bookmark> result = bookmarkRepository.findBookmarkPagesByQuery(null, "url", null, author, pageRequest);
+
+        // then
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).extracting("url").containsOnly(url1, url2, url3);
+    }
+
     @DisplayName("페이지네이션이 올바르게 동작하는지 확인한다")
     @Test
     void findBookmarkPagesByQuery_withPagination() {
