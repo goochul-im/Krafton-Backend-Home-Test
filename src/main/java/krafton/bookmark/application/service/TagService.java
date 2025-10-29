@@ -55,7 +55,7 @@ public class TagService {
     }
 
     @Transactional
-    public void updateName(TagUpdateRequest req) {
+    public TagResponse updateName(TagUpdateRequest req) {
         Tag find = tagRepository.findByIdAndAuthor(req.id(), req.author()).orElseThrow(
                 () -> {
                     log.error("태그 업데이트 실패! id : {}, author = {}", req.id(), req.author().getId());
@@ -63,6 +63,7 @@ public class TagService {
                 }
         );
         find.updateName(req.updateName());
+        return find.toDto();
     }
 
     public Tag findOne(Member author, Long id) {
