@@ -1,9 +1,8 @@
 package krafton.bookmark.common.security.service;
 
 import krafton.bookmark.common.security.details.CustomUserDetails;
-import krafton.bookmark.common.security.dto.LoginRequest;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.member.MemberRepository;
+import krafton.bookmark.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

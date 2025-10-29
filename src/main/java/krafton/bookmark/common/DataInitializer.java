@@ -1,11 +1,11 @@
 package krafton.bookmark.common;
 
 import krafton.bookmark.domain.bookmark.Bookmark;
-import krafton.bookmark.domain.bookmark.BookmarkRepository;
+import krafton.bookmark.infrastructure.BookmarkRepository;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.member.MemberRepository;
+import krafton.bookmark.infrastructure.MemberRepository;
 import krafton.bookmark.domain.tag.Tag;
-import krafton.bookmark.domain.tag.TagRepository;
+import krafton.bookmark.infrastructure.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

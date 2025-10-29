@@ -2,7 +2,7 @@ package krafton.bookmark.application.service;
 
 import jakarta.transaction.Transactional;
 import krafton.bookmark.domain.bookmark.Bookmark;
-import krafton.bookmark.domain.bookmark.BookmarkRepository;
+import krafton.bookmark.infrastructure.BookmarkRepository;
 import krafton.bookmark.application.dto.BookmarkQuery;
 import krafton.bookmark.application.dto.BookmarkResponse;
 import krafton.bookmark.application.dto.BookmarkSaveRequest;
@@ -10,7 +10,7 @@ import krafton.bookmark.application.dto.BookmarkUpdateRequest;
 import krafton.bookmark.application.exception.NotFoundEntityException;
 import krafton.bookmark.domain.member.Member;
 import krafton.bookmark.domain.tag.Tag;
-import krafton.bookmark.domain.tag.TagRepository;
+import krafton.bookmark.infrastructure.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

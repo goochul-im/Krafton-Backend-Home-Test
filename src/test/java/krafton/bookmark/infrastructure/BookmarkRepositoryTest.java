@@ -1,9 +1,8 @@
-package krafton.bookmark.domain.bookmark;
+package krafton.bookmark.infrastructure;
 
+import krafton.bookmark.domain.bookmark.Bookmark;
 import krafton.bookmark.domain.member.Member;
-import krafton.bookmark.domain.member.MemberRepository;
 import krafton.bookmark.domain.tag.Tag;
-import krafton.bookmark.domain.tag.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
