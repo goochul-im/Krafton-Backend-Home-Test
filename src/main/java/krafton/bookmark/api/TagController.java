@@ -48,7 +48,7 @@ public class TagController {
             @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails userDetails){
 
-        Tag find = tagService.findOne(userDetails.getMember(), id);
+        TagResponse find = tagService.findOne(userDetails.getMember(), id);
 
         return new ResponseEntity<>(find, HttpStatus.OK);
     }

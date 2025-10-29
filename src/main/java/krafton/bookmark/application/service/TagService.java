@@ -66,10 +66,10 @@ public class TagService {
         return find.toDto();
     }
 
-    public Tag findOne(Member author, Long id) {
+    public TagResponse findOne(Member author, Long id) {
         return tagRepository.findByIdAndAuthor(id, author).orElseThrow(() -> {
             log.error("엔티티를 찾을 수 없습니다. id = {}, author = {}", id, author.getId());
             return new NotFoundEntityException("해당 엔티티가 없습니다");
-        });
+        }).toDto();
     }
 }
