@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,6 +23,9 @@ class MemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     String username = "user33";
     String password = "1234";
@@ -37,6 +41,7 @@ class MemberServiceTest {
         //GIVEN
         given(memberRepository.save(any())).willReturn(testMember);
         given(memberRepository.countByUsername(username)).willReturn(0);
+        given(passwordEncoder.encode(password)).willReturn(password);
 
         //WHEN
         Member save = memberService.signUp(testRequest);
