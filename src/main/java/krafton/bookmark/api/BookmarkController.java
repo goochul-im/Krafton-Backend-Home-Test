@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import krafton.bookmark.api.dto.BookmarkSaveApiRequest;
 import krafton.bookmark.api.dto.BookmarkUpdateApiRequest;
 import krafton.bookmark.api.dto.PageResponse;
@@ -41,7 +42,7 @@ public class BookmarkController {
     @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
     @PostMapping
     public ResponseEntity<?> saveBookmark(
-            @RequestBody BookmarkSaveApiRequest request,
+            @Valid @RequestBody BookmarkSaveApiRequest request,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails details) {
 
         Bookmark save = bookmarkService.save(new BookmarkSaveRequest(
