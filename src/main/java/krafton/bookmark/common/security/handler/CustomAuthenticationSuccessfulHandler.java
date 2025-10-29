@@ -1,15 +1,12 @@
 package krafton.bookmark.common.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import krafton.bookmark.common.security.details.CustomUserDetails;
-import krafton.bookmark.common.security.dto.LoginRequest;
 import krafton.bookmark.common.security.util.SecurityResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

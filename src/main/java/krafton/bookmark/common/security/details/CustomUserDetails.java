@@ -1,8 +1,10 @@
 package krafton.bookmark.common.security.details;
 
 import krafton.bookmark.common.security.dto.LoginRequest;
+import krafton.bookmark.domain.member.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -11,24 +13,24 @@ import java.util.List;
 @Getter
 public class CustomUserDetails implements UserDetails {
 
-    private final LoginRequest request;
+    private final Member member;
 
-    public CustomUserDetails(LoginRequest loginRequest) {
-        this.request = loginRequest;
+    public CustomUserDetails(Member member) {
+        this.member = member;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getPassword() {
-        return request.password();
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return request.username();
+        return member.getUsername();
     }
 }
